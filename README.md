@@ -1,59 +1,187 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🏥 SaaS Clínica - Sistema Multi-tenant de Gestão Clínica
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+[![Laravel](https://img.shields.io/badge/Laravel-12.x-red.svg)](https://laravel.com)
+[![PHP](https://img.shields.io/badge/PHP-8.3-blue.svg)](https://php.net)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-## About Laravel
+Sistema SaaS multi-tenant para gestão de clínicas médicas desenvolvido com Laravel 12. Projeto acadêmico da disciplina de Desenvolvimento Web II focado em **autorização multi-tenant com Laravel Policies**.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📋 Sobre o Projeto
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Aplicação SaaS que permite múltiplas clínicas operarem de forma isolada no mesmo sistema. Implementa autorização robusta baseada em papéis (Owner/Staff) com controle granular de permissões usando Laravel Policies.
 
-## Learning Laravel
+### 🎯 Funcionalidades Principais
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+- **Multi-tenancy:** Isolamento completo de dados entre clínicas
+- **Gestão de Clínicas:** CRUD com controle de membros (Owner/Staff)
+- **Cadastro de Pacientes:** Dados básicos vinculados à clínica
+- **Agendamento de Consultas:** Sistema completo com status e responsável
+- **Autorização Granular:** Policies para cada tipo de operação
+- **Autenticação Manual:** Implementada sem starter kits
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## 🛠️ Tecnologias
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- **Backend:** Laravel 12 (PHP 8.3)
+- **Banco de Dados:** MySQL 8.0
+- **Frontend:** Blade Templates + Bootstrap 5
+- **Containerização:** Docker + Laravel Sail
+- **Controle de Versão:** Git + GitHub
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## 🏗️ Arquitetura
 
-## Contributing
+### Entidades Principais
+```
+Users ←→ Organization_User (pivot) ←→ Organizations
+                                           ↓
+                                       Patients
+                                           ↓
+                                     Appointments
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Papéis (Roles)
 
-## Code of Conduct
+- **Owner:** Controle total da clínica (gerenciar membros, deletar dados)
+- **Staff:** Equipe médica (criar/editar consultas e pacientes)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Políticas de Autorização
 
-## Security Vulnerabilities
+| Recurso | Visualizar | Criar | Editar | Deletar |
+|---------|------------|-------|--------|---------|
+| Organizations | Membro | Autenticado | Owner | Owner |
+| Patients | Membro | Staff/Owner | Staff/Owner | Owner |
+| Appointments | Membro | Staff/Owner | Owner/Responsável | Owner/Responsável |
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## 🚀 Setup do Projeto
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Pré-requisitos
+
+- Docker Desktop
+- WSL2 (Windows) ou Linux/macOS
+- Git
+
+### Instalação
+
+1. **Clone o repositório**
+```bash
+   git clone https://github.com/seu-usuario/saas-clinica-laravel.git
+   cd saas-clinica-laravel
+```
+
+2. **Copie o arquivo de ambiente**
+```bash
+   cp .env.example .env
+```
+
+3. **Suba os containers Docker**
+```bash
+   ./vendor/bin/sail up -d
+```
+
+4. **Instale as dependências**
+```bash
+   ./vendor/bin/sail composer install
+```
+
+5. **Gere a chave da aplicação**
+```bash
+   ./vendor/bin/sail artisan key:generate
+```
+
+6. **Execute as migrations**
+```bash
+   ./vendor/bin/sail artisan migrate
+```
+
+7. **Popule o banco com dados de teste**
+```bash
+   ./vendor/bin/sail artisan db:seed
+```
+
+8. **Acesse a aplicação**
+   - URL: http://localhost
+
+---
+
+## 👥 Usuários de Teste
+
+Após rodar o seeder, você pode usar:
+
+| Email | Senha | Papel | Clínica |
+|-------|-------|-------|---------|
+| owner@clinica1.com | password | Owner | Clínica Exemplo 1 |
+| staff@clinica1.com | password | Staff | Clínica Exemplo 1 |
+| owner@clinica2.com | password | Owner | Clínica Exemplo 2 |
+
+---
+
+## 📁 Estrutura do Projeto
+```
+app/
+├── Enums/              # Role, AppointmentStatus
+├── Http/
+│   ├── Controllers/    # Lógica de controle
+│   ├── Requests/       # Validações (Form Requests)
+│   └── Middleware/     # Middleware customizado
+├── Models/             # Eloquent Models
+└── Policies/           # Autorização (Policies)
+
+database/
+├── migrations/         # Estrutura do banco
+└── seeders/           # Dados de teste
+
+resources/views/        # Templates Blade
+routes/web.php         # Rotas da aplicação
+```
+
+---
+
+## 🧪 Comandos Úteis
+```bash
+# Subir ambiente
+./vendor/bin/sail up -d
+
+# Rodar migrations
+./vendor/bin/sail artisan migrate
+
+# Limpar e recriar banco
+./vendor/bin/sail artisan migrate:fresh --seed
+
+# Acessar MySQL
+./vendor/bin/sail mysql
+
+# Logs em tempo real
+./vendor/bin/sail logs -f
+
+# Desligar ambiente
+./vendor/bin/sail down
+```
+
+---
+
+## 👨‍💻 Autor
+
+**Pedro Otavio Lopes da Silva**
+- GitHub: https://github.com/pdrlps1
+- LinkedIn: https://linkedin.com/in/pedro-otavio-lopes
+
+---
+
+## 📄 Licença
+
+Este projeto foi desenvolvido para fins educacionais como parte da disciplina de Desenvolvimento Web 3.
+
+---
+
+## 🙏 Agradecimentos
+
+- Professor Marcos pela orientação
+- Documentação oficial do Laravel
+- Comunidade Laravel Brasil
