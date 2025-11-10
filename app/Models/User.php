@@ -3,9 +3,13 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Role;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -44,5 +48,54 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function organizations(): BelongsToMany
+    {
+        return $this->belongsToMany(Organization::class, 'organization_user')
+            ->withPivot('role')
+            ->withTimestamps();
+    }
+
+    public function appointments(): HasMany
+    {
+        return $this->hasMany(Appointment::class, 'responsible_user_id');
+    }
+
+    public function ownedOrganizations(): HasMany
+    {
+        return $this->hasMany(Organization::class, 'owner_id');
+    }
+
+    public function belongsToOrganization(int $organizationId): bool
+    {
+        return $this->organizations()
+            ->where('organization_id', $organizationId)
+            ->exists();
+    }
+
+    public function isOwnerOf(int $organizationId): bool
+    {
+        return $this->organizations()
+            ->where('organization_id', $organizationId)
+            ->wherePivot('role', Role::Owner)
+            ->exists();
+    }
+
+    public function isStaffOf(int $organizationId): bool
+    {
+        return $this->organizations()
+            ->where('organization_id', $organizationId)
+            ->wherePivot('role', Role::Staff)
+            ->exists();
+    }
+
+    public function getRoleInOrganization(int $organizationId): ?Role
+    {
+        $pivot = $this->organizations()
+            ->where('organization_id', $organizationId)
+            ->first()?->pivot;
+
+        return $pivot?->role ?? null;
     }
 }
