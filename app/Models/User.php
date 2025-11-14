@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-
 use App\Role;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -50,7 +48,7 @@ class User extends Authenticatable
         ];
     }
 
-    public function organizations(): BelongsToMany
+    public function organizations()
     {
         return $this->belongsToMany(Organization::class, 'organization_user')
             ->withPivot('role')
