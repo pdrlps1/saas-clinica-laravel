@@ -22,14 +22,7 @@ class OrganizationController extends Controller
     {
         $user = $request->user();
 
-        if ($user) {
-            $organizations = $user->organizations()
-                ->withPivot('role')
-                ->latest()
-                ->paginate(10);
-
-            return view('organizations.index', compact('organizations'));
-        }
+        $organizations = $user->organizations()->withPivot('role')->latest()->paginate(10);
 
         return view('organizations.index', compact('organizations'));
     }

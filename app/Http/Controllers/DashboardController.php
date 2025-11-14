@@ -10,8 +10,6 @@ class DashboardController extends Controller
     {
         $user = $request->user();
 
-        if($user)
-        {
         $organizations = $user->organizations()
             ->withPivot('role')
             ->get();
@@ -20,8 +18,6 @@ class DashboardController extends Controller
             'total_organizations' => $organizations->count(),
             'owned_organizations' => $user->ownedOrganizations()->count(),
         ];
-        }
-
 
         return view('dashboard', compact('organizations', 'stats'));
     }
