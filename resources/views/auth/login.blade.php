@@ -50,6 +50,18 @@
 
                     <hr class="my-4">
 
+                    {{-- Link para Criar Conta --}}
+                    <div class="text-center mb-3">
+                        <p class="mb-0">
+                            Não tem uma conta?
+                            <a href="{{ route('register') }}" class="text-decoration-none">
+                                <i class="bi bi-person-plus"></i> Criar conta
+                            </a>
+                        </p>
+                    </div>
+
+                    <hr class="my-4">
+
                     <div class="text-center text-muted small">
                         <p class="mb-1"><strong>Credenciais de teste:</strong></p>
                         <p class="mb-0">joao@example.com / password</p>

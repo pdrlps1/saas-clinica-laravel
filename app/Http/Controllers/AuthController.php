@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AuthRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use App\Http\Requests\RegisterRequest;
 
 class AuthController extends Controller
 {
@@ -35,5 +38,25 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect()->route('login')->with('success', 'Logout realizado com sucesso!');
+    }
+
+    public function showRegisterForm ()
+    {
+        return view('auth.register');
+    }
+
+    public function register(RegisterRequest $request)
+    {
+        $user = User::create([
+            'name'=>$request->name,
+            'email'=>$request->email,
+            'password'=>Hash::make($request->password),
+        ]);
+
+        Auth::login($user);
+
+        $request->session()->regenerate();
+
+        return redirect()->route('dashboard')->with('success', 'Conta criada com sucesso! Bem-vindo(a)!');
     }
 }
