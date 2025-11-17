@@ -50,7 +50,7 @@ class PatientController extends Controller
     public function show(Patient $patient)
     {
         // Carregar consultas do paciente
-        $patient->load(['appointments' => function ($query) {
+        $patient->load(['appointment' => function ($query) {
             $query->with('responsible')->latest('starts_at');
         }]);
 
