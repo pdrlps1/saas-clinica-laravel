@@ -1,187 +1,222 @@
-# 🏥 SaaS Clínica - Sistema Multi-tenant de Gestão Clínica
+# 🏥 SaaS Clínica - Sistema Multi-tenant de Gestão de Clínicas
 
-[![Laravel](https://img.shields.io/badge/Laravel-12.x-red.svg)](https://laravel.com)
-[![PHP](https://img.shields.io/badge/PHP-8.3-blue.svg)](https://php.net)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+**Trabalho Final - Desenvolvimento Web 3**
 
-Sistema SaaS multi-tenant para gestão de clínicas médicas desenvolvido com Laravel 12. Projeto acadêmico da disciplina de Desenvolvimento Web II focado em **autorização multi-tenant com Laravel Policies**.
+**Desenvolvido por:**
+
+-   Pedro Otávio Lopes
+-   João Pedro Padovan
 
 ---
 
 ## 📋 Sobre o Projeto
 
-Aplicação SaaS que permite múltiplas clínicas operarem de forma isolada no mesmo sistema. Implementa autorização robusta baseada em papéis (Owner/Staff) com controle granular de permissões usando Laravel Policies.
+Sistema multi-tenant de gestão de clínicas médicas desenvolvido em Laravel 12, permitindo o gerenciamento completo de múltiplas clínicas, pacientes e consultas com sistema de autorização granular baseado em papéis (Owner e Staff).
 
-### 🎯 Funcionalidades Principais
+### Funcionalidades Principais
 
-- **Multi-tenancy:** Isolamento completo de dados entre clínicas
-- **Gestão de Clínicas:** CRUD com controle de membros (Owner/Staff)
-- **Cadastro de Pacientes:** Dados básicos vinculados à clínica
-- **Agendamento de Consultas:** Sistema completo com status e responsável
-- **Autorização Granular:** Policies para cada tipo de operação
-- **Autenticação Manual:** Implementada sem starter kits
-
----
-
-## 🛠️ Tecnologias
-
-- **Backend:** Laravel 12 (PHP 8.3)
-- **Banco de Dados:** MySQL 8.0
-- **Frontend:** Blade Templates + Bootstrap 5
-- **Containerização:** Docker + Laravel Sail
-- **Controle de Versão:** Git + GitHub
+-   🔐 **Autenticação** - Login/Registro sem starter kits
+-   🏢 **Gestão de Clínicas** - CRUD completo com controle de membros
+-   👥 **Gestão de Pacientes** - Cadastro com dados pessoais e histórico
+-   📅 **Gestão de Consultas** - Agendamento com status e responsáveis
+-   🔒 **Autorização Granular** - Laravel Policies com isolamento multi-tenant
 
 ---
 
-## 🏗️ Arquitetura
+## 🛠️ Tecnologias Utilizadas
 
-### Entidades Principais
-```
-Users ←→ Organization_User (pivot) ←→ Organizations
-                                           ↓
-                                       Patients
-                                           ↓
-                                     Appointments
-```
-
-### Papéis (Roles)
-
-- **Owner:** Controle total da clínica (gerenciar membros, deletar dados)
-- **Staff:** Equipe médica (criar/editar consultas e pacientes)
-
-### Políticas de Autorização
-
-| Recurso | Visualizar | Criar | Editar | Deletar |
-|---------|------------|-------|--------|---------|
-| Organizations | Membro | Autenticado | Owner | Owner |
-| Patients | Membro | Staff/Owner | Staff/Owner | Owner |
-| Appointments | Membro | Staff/Owner | Owner/Responsável | Owner/Responsável |
+-   **Laravel 12.x** - Framework PHP
+-   **PHP 8.2+** - Linguagem
+-   **MySQL 8.0** - Banco de dados
+-   **Bootstrap 5.3** - Interface responsiva
+-   **Laravel Sail** - Ambiente Docker
+-   **Docker Compose** - Orquestração de containers
 
 ---
 
-## 🚀 Setup do Projeto
+## 📦 Requisitos
 
-### Pré-requisitos
-
-- Docker Desktop
-- WSL2 (Windows) ou Linux/macOS
-- Git
-
-### Instalação
-
-1. **Clone o repositório**
-```bash
-   git clone https://github.com/seu-usuario/saas-clinica-laravel.git
-   cd saas-clinica-laravel
-```
-
-2. **Copie o arquivo de ambiente**
-```bash
-   cp .env.example .env
-```
-
-3. **Suba os containers Docker**
-```bash
-   ./vendor/bin/sail up -d
-```
-
-4. **Instale as dependências**
-```bash
-   ./vendor/bin/sail composer install
-```
-
-5. **Gere a chave da aplicação**
-```bash
-   ./vendor/bin/sail artisan key:generate
-```
-
-6. **Execute as migrations**
-```bash
-   ./vendor/bin/sail artisan migrate
-```
-
-7. **Popule o banco com dados de teste**
-```bash
-   ./vendor/bin/sail artisan db:seed
-```
-
-8. **Acesse a aplicação**
-   - URL: http://localhost
+-   Docker e Docker Compose
+-   Git
+-   WSL 2 (Windows) ou Linux/macOS
 
 ---
 
-## 👥 Usuários de Teste
+## 🚀 Instalação e Configuração
 
-Após rodar o seeder, você pode usar:
+### 1. Clonar o Repositório
 
-| Email | Senha | Papel | Clínica |
-|-------|-------|-------|---------|
-| owner@clinica1.com | password | Owner | Clínica Exemplo 1 |
-| staff@clinica1.com | password | Staff | Clínica Exemplo 1 |
-| owner@clinica2.com | password | Owner | Clínica Exemplo 2 |
-
----
-
-## 📁 Estrutura do Projeto
-```
-app/
-├── Enums/              # Role, AppointmentStatus
-├── Http/
-│   ├── Controllers/    # Lógica de controle
-│   ├── Requests/       # Validações (Form Requests)
-│   └── Middleware/     # Middleware customizado
-├── Models/             # Eloquent Models
-└── Policies/           # Autorização (Policies)
-
-database/
-├── migrations/         # Estrutura do banco
-└── seeders/           # Dados de teste
-
-resources/views/        # Templates Blade
-routes/web.php         # Rotas da aplicação
-```
-
----
-
-## 🧪 Comandos Úteis
 ```bash
-# Subir ambiente
+git clone https://github.com/seu-usuario/saas-clinica-laravel.git
+cd saas-clinica-laravel
+```
+
+### 2. Instalar Dependências
+
+```bash
+composer install
+```
+
+### 3. Configurar Ambiente
+
+```bash
+# Copiar arquivo de ambiente
+cp .env.example .env
+
+# Gerar chave da aplicação
+./vendor/bin/sail artisan key:generate
+```
+
+### 4. Configurar .env
+
+Edite o arquivo `.env` e ajuste se necessário:
+
+```env
+APP_NAME="SaaS Clínica"
+APP_URL=http://localhost
+
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=saas_clinica
+DB_USERNAME=sail
+DB_PASSWORD=password
+```
+
+### 5. Iniciar Aplicação
+
+```bash
+# Subir containers Docker
 ./vendor/bin/sail up -d
 
-# Rodar migrations
+# Executar migrations
 ./vendor/bin/sail artisan migrate
 
-# Limpar e recriar banco
-./vendor/bin/sail artisan migrate:fresh --seed
+# Popular banco com dados de teste
+./vendor/bin/sail artisan db:seed
+```
 
-# Acessar MySQL
-./vendor/bin/sail mysql
+### 6. Acessar Sistema
 
-# Logs em tempo real
-./vendor/bin/sail logs -f
-
-# Desligar ambiente
-./vendor/bin/sail down
+```
+http://localhost
 ```
 
 ---
 
-## 👨‍💻 Autor
+## 🔑 Credenciais de Teste
 
-**Pedro Otavio Lopes da Silva**
-- GitHub: https://github.com/pdrlps1
-- LinkedIn: https://linkedin.com/in/pedro-otavio-lopes
+### Clínica Santa Maria
+
+**Owner (Proprietário):**
+
+-   Email: `joao@example.com`
+-   Senha: `password`
+
+**Staff (Equipe):**
+
+-   Email: `maria@example.com`
+-   Senha: `password`
+
+### Clínica São Lucas
+
+**Owner:**
+
+-   Email: `carlos@example.com`
+-   Senha: `password`
+
+**Staff:**
+
+-   Email: `ana@example.com`
+-   Senha: `password`
+
+---
+
+## 💻 Comandos Úteis
+
+```bash
+# Alias para facilitar (opcional)
+alias sail='./vendor/bin/sail'
+
+# Iniciar aplicação
+sail up -d
+
+# Parar aplicação
+sail down
+
+# Ver logs
+sail logs -f
+
+# Limpar caches
+sail artisan config:clear
+sail artisan route:clear
+sail artisan cache:clear
+
+# Recriar banco de dados
+sail artisan migrate:fresh --seed
+
+# Listar rotas
+sail artisan route:list
+```
+
+---
+
+## 🔐 Sistema de Autorização
+
+### Papéis
+
+#### 👑 Owner (Proprietário)
+
+-   Acesso completo à sua clínica
+-   Pode editar e deletar a clínica
+-   Pode gerenciar todos os pacientes e consultas
+-   Pode adicionar/remover membros da equipe
+
+#### 👨‍⚕️ Staff (Equipe)
+
+-   Acesso de leitura à clínica
+-   **NÃO pode** editar ou deletar a clínica
+-   Pode cadastrar pacientes e consultas
+-   Pode editar/deletar **apenas suas próprias consultas**
+-   **NÃO pode** deletar pacientes
+
+### Isolamento Multi-tenant
+
+-   ✅ Usuários só acessam dados da **sua clínica**
+-   ❌ Usuários **não podem** acessar dados de **outras clínicas**
+-   ✅ Todas as consultas filtradas automaticamente por organização
+
+---
+
+## 📚 Tecnologias e Conceitos Aplicados
+
+-   **MVC Pattern** - Model-View-Controller
+-   **ORM** - Eloquent para relacionamentos
+-   **RBAC** - Role-Based Access Control
+-   **Multi-tenancy** - Isolamento de dados por organização
+-   **Laravel Policies** - Autorização granular
+-   **Form Requests** - Validações robustas
+-   **Blade Templates** - Views responsivas
+-   **Docker** - Containerização com Sail
+
+---
+
+## 🎓 Informações Acadêmicas
+
+**Disciplina:** Sistemas Web 3
+
+**Instituição:** Faculdade Reges de Ribeirão Preto
+
+**Semestre:** 2024.2
+
+**Objetivo:** Desenvolvimento de sistema SaaS multi-tenant com Laravel, aplicando conceitos de autorização, validação e arquitetura MVC.
 
 ---
 
 ## 📄 Licença
 
-Este projeto foi desenvolvido para fins educacionais como parte da disciplina de Desenvolvimento Web 3.
+Projeto desenvolvido para fins **educacionais** como Trabalho Final da disciplina de Desenvolvimento Web 3.
 
 ---
 
-## 🙏 Agradecimentos
-
-- Professor Marcos pela orientação
-- Documentação oficial do Laravel
-- Comunidade Laravel Brasil
+**Última atualização:** Novembro 2024
