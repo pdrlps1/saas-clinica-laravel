@@ -59,14 +59,14 @@
                             </a>
                         </p>
                     </div>
-
+                    {{-- 
                     <hr class="my-4">
 
                     <div class="text-center text-muted small">
                         <p class="mb-1"><strong>Credenciais de teste:</strong></p>
                         <p class="mb-0">joao@example.com / password</p>
                         <p class="mb-0">maria@example.com / password</p>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
